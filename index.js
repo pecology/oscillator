@@ -74,7 +74,7 @@ class PianoKey {
     }
 }
 
-window.onload = function() {  
+window.onload = async function() {  
     const audioContext = new AudioContext();
 
     const keyToPianoKey = new Map();
@@ -140,6 +140,15 @@ window.onload = function() {
         const pianoKey = keyToPianoKey[event.key];
         if(pianoKey) {
             pianoKey.stop();
+        }
+    });
+
+    const midiAcess = await navigator.requestMIDIAccess();
+    const test = midiAcess.inputs.get("input-1");
+    midiAcess.inputs.forEach(i => {
+        console.log(i);
+        i.onmidimessage = (event) => {
+            console.log(event);
         }
     });
 }
